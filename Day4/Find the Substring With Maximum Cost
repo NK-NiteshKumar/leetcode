@@ -1,0 +1,21 @@
+class Solution {
+    public int maximumCostSubstring(String s, String chars, int[] vals) {
+    int[] dp = new int[s.length()];
+    Map<Character, Integer> map = new HashMap<>();
+    for (int i = 0; i < chars.length(); i++) {
+        map.put(chars.charAt(i), vals[i]);
+    }
+    int maxSum = 0, curSum = 0;
+    for (int i = 0; i < s.length(); i++) {
+        char c = s.charAt(i);
+        if (map.containsKey(c)) {
+            curSum = Math.max(curSum + map.get(c), 0);
+        } else {
+            curSum = Math.max(curSum + (c - 'a' + 1), 0);
+        }
+        dp[i] = curSum;
+        maxSum = Math.max(maxSum, dp[i]);
+    }
+    return maxSum;     
+    }
+}
