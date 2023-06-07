@@ -1,27 +1,27 @@
 class Solution {
-    public List<String> wordBreak(String s, Set<String> wordDict) {
-    return DFS(s, wordDict, new HashMap<String, LinkedList<String>>());
-    }       
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        List<String> results = new LinkedList<>();
+        StringBuilder tempHolder = new StringBuilder();
+        findNextWord(results, tempHolder, s, wordDict, 0);
+        return results;
+    }
 
-List<String> DFS(String s, Set<String> wordDict, HashMap<String, LinkedList<String>>map) {
-    if (map.containsKey(s)) 
-        return map.get(s);
-        
-    LinkedList<String>res = new LinkedList<String>();     
-    if (s.length() == 0) {
-        res.add("");
-        return res;
-    }               
-    for (String word : wordDict) {
-        if (s.startsWith(word)) {
-            List<String>sublist = DFS(s.substring(word.length()), wordDict, map);
-            for (String sub : sublist) 
-                res.add(word + (sub.isEmpty() ? "" : " ") + sub);               
+    private void findNextWord(List<String> results, StringBuilder tempHolder, String s, List<String> wordDict, int start) {
+        if (start == s.length()) {
+            results.add(tempHolder.toString().trim());
+            return;
         }
-    }       
-    map.put(s, res);
-    return res;
-  }
+
+        for (int end = start; end < s.length(); end++) {
+            String word = s.substring(start, end + 1);
+            if (wordDict.contains(word)) {
+                tempHolder.append(word + " ");
+                findNextWord(results, tempHolder, s, wordDict, end + 1);
+                tempHolder.delete(tempHolder.length() - word.length() - 1, tempHolder.length());
+            }
+        }
+        return;
+    }
 }
 
 //https://leetcode.com/problems/word-break-ii/
