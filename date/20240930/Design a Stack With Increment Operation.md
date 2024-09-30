@@ -32,3 +32,7 @@ class CustomStack {
     }
 }
 ```
+
+##
+
+![image](https://github.com/user-attachments/assets/0528374c-04c0-4c5f-9087-e9e60cc3dda9)
