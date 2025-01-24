@@ -1,0 +1,33 @@
+# 802. [Find Eventual Safe States](https://leetcode.com/problems/find-eventual-safe-states/description/?envType=daily-question&envId=2025-01-24)
+
+## Solution
+
+```java
+class Solution {
+    public List<Integer> eventualSafeNodes(int[][] graph) {
+        HashMap<Integer,Boolean> map = new HashMap<>();
+        int n = graph.length;
+        List<Integer> res = new ArrayList<>();
+        for(int i=0;i<n;i++){
+            if(dfs(i,graph,map)){
+                res.add(i);
+            }
+        }
+        return res;
+    }
+    public boolean dfs(int node, int[][] graph, HashMap<Integer,Boolean> map){
+        if(map.containsKey(node)){
+            return map.get(node);
+        }
+
+        map.put(node,false);
+        for(int neighbour : graph[node]){
+            if(!dfs(neighbour, graph, map)){
+                return false;
+            }
+        }
+        map.put(node,true);
+        return true;
+    }
+}
+```
