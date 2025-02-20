@@ -1,0 +1,15 @@
+# 1980. [Find Unique Binary String](https://leetcode.com/problems/find-unique-binary-string/description/?envType=daily-question&envId=2025-02-20)
+
+## Solution
+
+```java
+class Solution {
+    public String findDifferentBinaryString(String[] nums) {
+        StringBuilder ans = new StringBuilder();
+        for (int i = 0; i < nums.length; i++) {
+            ans.append(nums[i].charAt(i) == '0' ? '1' : '0');
+        }
+        return ans.toString();
+    }
+}
+```
