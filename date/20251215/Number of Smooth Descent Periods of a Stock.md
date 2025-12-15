@@ -1,0 +1,17 @@
+# 2110. [Number of Smooth Descent Periods of a Stock](https://leetcode.com/problems/number-of-smooth-descent-periods-of-a-stock/description/?envType=daily-question&envId=2025-12-15)
+
+## Solution
+
+```java
+class Solution {
+    public long getDescentPeriods(int[] prices) {
+        long ans = 1, count = 1;
+        for(int i = 0; i < prices.length - 1; i++) {
+            if(prices[i] == prices[i + 1] + 1) count++;
+            else count = 1;
+            ans += count;
+        }
+        return ans;
+    }
+}
+```
