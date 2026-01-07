@@ -20,38 +20,33 @@
  */
 class Solution {
     static final int MOD = 1_000_000_007;
+    long totalSum = 0;
     long maxProduct = 0;
 
-    long totalSum(TreeNode root) {
+    long getTotalSum(TreeNode root) {
         if (root == null) return 0;
         return root.val 
-             + totalSum(root.left) 
-             + totalSum(root.right);
+             + getTotalSum(root.left) 
+             + getTotalSum(root.right);
     }
 
-    long subtreeSum(TreeNode root) {
+    long dfs(TreeNode root) {
         if (root == null) return 0;
-        return root.val 
-             + subtreeSum(root.left) 
-             + subtreeSum(root.right);
-    }
 
-    void dfs(TreeNode node, TreeNode root, long total) {
-        if (node == null) return;
+        long left = dfs(root.left);
+        long right = dfs(root.right);
 
-        if (node != root) {
-            long sub = subtreeSum(node);
-            long product = sub * (total - sub);
-            maxProduct = Math.max(maxProduct, product);
-        }
+        long subSum = root.val + left + right;
 
-        dfs(node.left, root, total);
-        dfs(node.right, root, total);
+        long product = subSum * (totalSum - subSum);
+        maxProduct = Math.max(maxProduct, product);
+
+        return subSum;
     }
 
     public int maxProduct(TreeNode root) {
-        long total = totalSum(root);
-        dfs(root, root, total);
+        totalSum = getTotalSum(root);
+        dfs(root);
         return (int)(maxProduct % MOD);
     }
 }
