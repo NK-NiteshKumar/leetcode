@@ -1,0 +1,62 @@
+# 3650. [Minimum Cost Path with Edge Reversals](https://leetcode.com/problems/minimum-cost-path-with-edge-reversals/description/?envType=daily-question&envId=2026-01-27)
+
+## Solution
+
+```java
+class Solution {
+    static class Edge {
+        int v;
+        int w;
+        Edge(int v, int w) {
+            this.v = v; this.w = w;
+        }
+    }
+
+    static class State {
+        int dist;
+        int node;
+        State(int dist, int node) { 
+            this.dist = dist; this.node = node; 
+        }
+    }
+
+    public int minCost(int n, int[][] edges) {
+        List<List<Edge>> graph = new ArrayList<>();
+        for (int i = 0; i < n; i++) 
+            graph.add(new ArrayList<>());
+
+        for (int[] e : edges) {
+            int u = e[0], v = e[1], w = e[2];
+            graph.get(u).add(new Edge(v, w));
+            graph.get(v).add(new Edge(u, 2 * w));
+        }
+
+        int[] ans = new int[n];
+        Arrays.fill(ans, Integer.MAX_VALUE);
+        ans[0] = 0;
+
+        PriorityQueue<State> pq = new PriorityQueue<>((a, b) -> Integer.compare(a.dist, b.dist));
+        pq.add(new State(0, 0));
+
+        while (!pq.isEmpty()) {
+            State cur = pq.poll();
+            int weight = cur.dist;
+            int node = cur.node;
+
+            if (weight > ans[node]) 
+                continue;
+
+            for (Edge e : graph.get(node)) {
+                int nd = e.v;
+                int wt = e.w;
+                if (ans[node] != Integer.MAX_VALUE && wt + weight < ans[nd]) {
+                    ans[nd] = wt + weight;
+                    pq.add(new State(ans[nd], nd));
+                }
+            }
+        }
+
+        return ans[n - 1] == Integer.MAX_VALUE ? -1 : ans[n - 1];
+    }
+}
+```
